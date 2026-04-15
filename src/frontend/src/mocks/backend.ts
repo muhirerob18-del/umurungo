@@ -1,0 +1,342 @@
+import type { backendInterface } from "../backend";
+import {
+  AnalyticsPeriod,
+  DiscountType,
+  OrderStatus,
+  PaymentMethod,
+  ReviewStatus,
+  Role,
+} from "../backend";
+import type { Principal } from "@icp-sdk/core/principal";
+
+const makePrincipal = (id: string): Principal => id as unknown as Principal;
+
+const sampleUser = {
+  id: makePrincipal("user-1"),
+  displayName: "Jane Doe",
+  createdAt: BigInt(Date.now()) * BigInt(1_000_000),
+  role: Role.Customer,
+  defaultAddressIndex: BigInt(0),
+  isActive: true,
+  email: "jane@example.com",
+  preferences: {
+    emailNotifications: true,
+    language: "en",
+    currency: "USD",
+  },
+  updatedAt: BigInt(Date.now()) * BigInt(1_000_000),
+  addresses: [
+    {
+      fullName: "Jane Doe",
+      street: "123 Main St",
+      city: "New York",
+      state: "NY",
+      country: "USA",
+      postalCode: "10001",
+      phone: "+1-555-000-0000",
+    },
+  ],
+  avatarUrl: undefined,
+};
+
+const sampleProducts = [
+  {
+    id: BigInt(1),
+    sku: "ELEC-001",
+    categoryId: BigInt(1),
+    title: "Wireless Noise-Cancelling Headphones",
+    reorderPoint: BigInt(10),
+    createdAt: BigInt(Date.now()) * BigInt(1_000_000),
+    tags: ["electronics", "audio", "wireless"],
+    description:
+      "Premium wireless headphones with active noise cancellation and 30-hour battery life.",
+    isActive: true,
+    updatedAt: BigInt(Date.now()) * BigInt(1_000_000),
+    stock: BigInt(45),
+    compareAtPrice: 149.99,
+    subcategoryId: BigInt(11),
+    price: 89.99,
+    soldCount: BigInt(230),
+    images: [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80",
+    ],
+  },
+  {
+    id: BigInt(2),
+    sku: "ELEC-002",
+    categoryId: BigInt(1),
+    title: "Smart Watch Pro X",
+    reorderPoint: BigInt(5),
+    createdAt: BigInt(Date.now()) * BigInt(1_000_000),
+    tags: ["electronics", "wearable", "fitness"],
+    description:
+      "Advanced smartwatch with health tracking, GPS, and a week-long battery.",
+    isActive: true,
+    updatedAt: BigInt(Date.now()) * BigInt(1_000_000),
+    stock: BigInt(20),
+    compareAtPrice: 299.99,
+    subcategoryId: BigInt(12),
+    price: 199.99,
+    soldCount: BigInt(89),
+    images: [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80",
+    ],
+  },
+  {
+    id: BigInt(3),
+    sku: "FASH-001",
+    categoryId: BigInt(2),
+    title: "Classic Linen Shirt",
+    reorderPoint: BigInt(15),
+    createdAt: BigInt(Date.now()) * BigInt(1_000_000),
+    tags: ["fashion", "shirt", "summer"],
+    description:
+      "Lightweight 100% linen shirt perfect for warm weather. Available in multiple colors.",
+    isActive: true,
+    updatedAt: BigInt(Date.now()) * BigInt(1_000_000),
+    stock: BigInt(80),
+    compareAtPrice: 59.99,
+    subcategoryId: BigInt(21),
+    price: 39.99,
+    soldCount: BigInt(412),
+    images: [
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80",
+    ],
+  },
+  {
+    id: BigInt(4),
+    sku: "FASH-002",
+    categoryId: BigInt(2),
+    title: "Minimalist Leather Sneakers",
+    reorderPoint: BigInt(10),
+    createdAt: BigInt(Date.now()) * BigInt(1_000_000),
+    tags: ["fashion", "shoes", "leather"],
+    description:
+      "Clean, minimal leather sneakers that pair with everything. Handcrafted for lasting comfort.",
+    isActive: true,
+    updatedAt: BigInt(Date.now()) * BigInt(1_000_000),
+    stock: BigInt(35),
+    compareAtPrice: 120.0,
+    subcategoryId: BigInt(22),
+    price: 89.0,
+    soldCount: BigInt(167),
+    images: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+    ],
+  },
+];
+
+const sampleOrder = {
+  id: BigInt(1),
+  status: OrderStatus.Delivered,
+  total: 129.98,
+  paymentMethod: PaymentMethod.Stripe,
+  discountAmount: 0,
+  createdAt: BigInt(Date.now() - 86400000) * BigInt(1_000_000),
+  updatedAt: BigInt(Date.now()) * BigInt(1_000_000),
+  shippingAddress: sampleUser.addresses[0],
+  customerId: sampleUser.id,
+  items: [
+    {
+      productId: BigInt(3),
+      title: "Classic Linen Shirt",
+      imageUrl:
+        "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=200&q=80",
+      quantity: BigInt(2),
+      price: 39.99,
+    },
+    {
+      productId: BigInt(1),
+      title: "Wireless Noise-Cancelling Headphones",
+      imageUrl:
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=80",
+      quantity: BigInt(1),
+      price: 89.99,
+    },
+  ],
+  subtotal: 129.98,
+  couponCode: undefined,
+  trackingNumber: "TRK-20240415-001",
+  notes: undefined,
+  paymentReference: "pi_test_12345",
+};
+
+const sampleCategories = [
+  {
+    id: BigInt(1),
+    name: "Electronics & Gadgets",
+    slug: "electronics-gadgets",
+    subcategories: [
+      { id: BigInt(11), name: "Audio", slug: "audio" },
+      { id: BigInt(12), name: "Wearables", slug: "wearables" },
+      { id: BigInt(13), name: "Cameras", slug: "cameras" },
+    ],
+  },
+  {
+    id: BigInt(2),
+    name: "Fashion & Apparel",
+    slug: "fashion-apparel",
+    subcategories: [
+      { id: BigInt(21), name: "Tops & Shirts", slug: "tops-shirts" },
+      { id: BigInt(22), name: "Shoes", slug: "shoes" },
+      { id: BigInt(23), name: "Accessories", slug: "accessories" },
+    ],
+  },
+];
+
+const sampleReview = {
+  id: BigInt(1),
+  status: ReviewStatus.Approved,
+  title: "Great product!",
+  userId: sampleUser.id,
+  createdAt: BigInt(Date.now() - 86400000) * BigInt(1_000_000),
+  productId: BigInt(1),
+  comment: "Exactly as described. Fast shipping and excellent quality.",
+  updatedAt: BigInt(Date.now()) * BigInt(1_000_000),
+  rating: BigInt(5),
+  images: [],
+};
+
+const sampleCoupon = {
+  id: BigInt(1),
+  discountValue: 10,
+  validFrom: BigInt(Date.now() - 7 * 86400000) * BigInt(1_000_000),
+  code: "SAVE10",
+  createdAt: BigInt(Date.now() - 7 * 86400000) * BigInt(1_000_000),
+  discountType: DiscountType.Percent,
+  usageCount: BigInt(42),
+  validTo: BigInt(Date.now() + 30 * 86400000) * BigInt(1_000_000),
+  isActive: true,
+  usageLimit: BigInt(100),
+  applicableCategories: [],
+  minOrderAmount: undefined,
+};
+
+export const mockBackend: backendInterface = {
+  addAddress: async () => true,
+  addToCart: async () => true,
+  addToWishlist: async () => true,
+  adminAdjustStock: async () => true,
+  adminBulkSetActive: async () => BigInt(2),
+  adminCreateCoupon: async () => sampleCoupon,
+  adminCreateProduct: async () => sampleProducts[0],
+  adminDeactivateCoupon: async () => true,
+  adminDeactivateUser: async () => true,
+  adminDeleteProduct: async () => true,
+  adminGetDashboardStats: async () => ({
+    totalProducts: BigInt(42),
+    totalOrders: BigInt(1280),
+    pendingOrders: BigInt(15),
+    lowStockCount: BigInt(3),
+    revenueToday: 1450.75,
+    ordersToday: BigInt(24),
+    totalUsers: BigInt(856),
+    totalRevenue: 148320.5,
+  }),
+  adminGetLowStockAlerts: async () => [
+    {
+      title: "Wireless Noise-Cancelling Headphones",
+      reorderPoint: BigInt(10),
+      productId: BigInt(1),
+      stock: BigInt(4),
+    },
+    {
+      title: "Smart Watch Pro X",
+      reorderPoint: BigInt(5),
+      productId: BigInt(2),
+      stock: BigInt(2),
+    },
+  ],
+  adminGetPendingReviews: async () => [sampleReview],
+  adminGetRevenueByPeriod: async () => [
+    { period: "Week 1", revenue: 12400, orderCount: BigInt(85) },
+    { period: "Week 2", revenue: 18750, orderCount: BigInt(112) },
+    { period: "Week 3", revenue: 15200, orderCount: BigInt(98) },
+    { period: "Week 4", revenue: 22100, orderCount: BigInt(145) },
+  ],
+  adminGetTopProducts: async () => [
+    {
+      title: "Classic Linen Shirt",
+      revenue: 16470.88,
+      productId: BigInt(3),
+      soldCount: BigInt(412),
+    },
+    {
+      title: "Wireless Headphones",
+      revenue: 20696.7,
+      productId: BigInt(1),
+      soldCount: BigInt(230),
+    },
+    {
+      title: "Minimalist Sneakers",
+      revenue: 14863.0,
+      productId: BigInt(4),
+      soldCount: BigInt(167),
+    },
+    {
+      title: "Smart Watch Pro X",
+      revenue: 17799.11,
+      productId: BigInt(2),
+      soldCount: BigInt(89),
+    },
+  ],
+  adminListCoupons: async () => [sampleCoupon],
+  adminListOrders: async () => [sampleOrder],
+  adminListUsers: async () => [
+    sampleUser,
+    {
+      ...sampleUser,
+      id: makePrincipal("admin-1"),
+      displayName: "Admin User",
+      email: "admin@shop.com",
+      role: Role.Admin,
+    },
+  ],
+  adminModerateReview: async () => true,
+  adminSetTrackingNumber: async () => true,
+  adminSetUserRole: async () => true,
+  adminUpdateCoupon: async () => sampleCoupon,
+  adminUpdateOrderStatus: async () => true,
+  adminUpdateProduct: async () => sampleProducts[0],
+  cancelOrder: async () => true,
+  clearCart: async () => true,
+  getCart: async () => [
+    {
+      productId: BigInt(1),
+      addedAt: BigInt(Date.now()) * BigInt(1_000_000),
+      quantity: BigInt(1),
+    },
+  ],
+  getMyOrders: async () => [sampleOrder],
+  getMyProfile: async () => sampleUser,
+  getMyReviews: async () => [sampleReview],
+  getOrderDetail: async () => sampleOrder,
+  getProduct: async () => sampleProducts[0],
+  getProductRating: async () => ({
+    ratingCounts: [BigInt(0), BigInt(1), BigInt(3), BigInt(12), BigInt(45)],
+    productId: BigInt(1),
+    averageRating: 4.6,
+    totalReviews: BigInt(61),
+  }),
+  getProductRatingSummary: async () => BigInt(1),
+  getProductReviews: async () => [sampleReview],
+  getWishlist: async () => [BigInt(2), BigInt(4)],
+  listCategories: async () => sampleCategories,
+  listProducts: async () => sampleProducts,
+  placeOrder: async () => sampleOrder,
+  registerUser: async () => sampleUser,
+  removeAddress: async () => true,
+  removeFromCart: async () => true,
+  removeFromWishlist: async () => true,
+  searchProducts: async () => sampleProducts.slice(0, 2),
+  seedData: async () => "Seeded 4 products, 2 categories",
+  setDefaultAddress: async () => true,
+  submitReview: async () => sampleReview,
+  updateCartItem: async () => true,
+  updateMyProfile: async () => sampleUser,
+  validateCoupon: async () => ({
+    discountAmount: 12.99,
+    message: "Coupon applied! 10% off your order.",
+    isValid: true,
+  }),
+};

@@ -1,0 +1,222 @@
+// Version: 1.0.0
+type Address__114457332 = Address__166294866;
+type Address__166294866 =
+  {
+    city : Text;
+    country : Text;
+    fullName : Text;
+    phone : Text;
+    postalCode : Text;
+    state : Text;
+    street : Text
+  };
+type Address__227950649 = Address__166294866;
+type CartItemInternal__855898022 =
+  {
+    addedAt : Timestamp__136757503;
+    productId : ProductId__291456640;
+    var quantity : Nat
+  };
+type CategoryId__14729845 = Nat;
+type CategoryId__159534048 = CategoryId__14729845;
+type CategoryId__924393996 = CategoryId__14729845;
+type Category__951250105 =
+  {
+    id : CategoryId__924393996;
+    name : Text;
+    slug : Text;
+    subcategories : [Subcategory__504597285]
+  };
+type CouponId__765443927 = CouponId__915196364;
+type CouponId__915196364 = Nat;
+type CouponInternal__493289220 =
+  {
+    var applicableCategories : [CategoryId__159534048];
+    var code : Text;
+    createdAt : Timestamp__434460450;
+    var discountType : DiscountType__183395310;
+    var discountValue : Float;
+    id : CouponId__765443927;
+    var isActive : Bool;
+    var minOrderAmount : ?Float;
+    var usageCount : Nat;
+    var usageLimit : ?Nat;
+    var validFrom : Timestamp__434460450;
+    var validTo : Timestamp__434460450
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type DiscountType__183395310 = {#Fixed; #Percent};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type List__415060402<T> = List__790383201<T>;
+type List__790383201<T> =
+  {
+    var blockIndex : Nat__490723111;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__490723111
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type OrderId__197865225 = Nat;
+type OrderId__559018581 = OrderId__197865225;
+type OrderInternal__948861561 =
+  {
+    couponCode : ?Text;
+    createdAt : Timestamp__281002573;
+    customerId : UserId__400494113;
+    var discountAmount : Float;
+    id : OrderId__559018581;
+    items : [OrderItem__970180480];
+    var notes : ?Text;
+    paymentMethod : PaymentMethod__731196174;
+    var paymentReference : ?Text;
+    shippingAddress : Address__114457332;
+    var status : OrderStatus__591380551;
+    var subtotal : Float;
+    var total : Float;
+    var trackingNumber : ?Text;
+    var updatedAt : Timestamp__281002573
+  };
+type OrderItem__970180480 =
+  {
+    imageUrl : Text;
+    price : Float;
+    productId : ProductId__729729690;
+    quantity : Nat;
+    title : Text
+  };
+type OrderStatus__591380551 =
+  {#Cancelled; #Delivered; #Pending; #Processing; #Refunded; #Shipped};
+type PaymentMethod__46913440 = {#MtnMomo; #PayPal; #Stripe};
+type PaymentMethod__731196174 = PaymentMethod__46913440;
+type ProductId__109823193 = ProductId__160010635;
+type ProductId__160010635 = Nat;
+type ProductId__291456640 = ProductId__160010635;
+type ProductId__729729690 = ProductId__160010635;
+type ProductId__825579717 = ProductId__160010635;
+type ProductInternal__902793983 =
+  {
+    var categoryId : CategoryId__924393996;
+    var compareAtPrice : ?Float;
+    createdAt : Timestamp__102412676;
+    var description : Text;
+    id : ProductId__825579717;
+    var images : [Text];
+    var isActive : Bool;
+    var price : Float;
+    var reorderPoint : Nat;
+    var sku : Text;
+    var soldCount : Nat;
+    var stock : Nat;
+    var subcategoryId : ?CategoryId__924393996;
+    var tags : [Text];
+    var title : Text;
+    var updatedAt : Timestamp__102412676
+  };
+type ReviewId__1068003314 = ReviewId__496285678;
+type ReviewId__496285678 = Nat;
+type ReviewInternal__542788455 =
+  {
+    var comment : Text;
+    createdAt : Timestamp__179445768;
+    id : ReviewId__1068003314;
+    var images : [Text];
+    productId : ProductId__109823193;
+    var rating : Nat;
+    var status : ReviewStatus__64633179;
+    var title : Text;
+    var updatedAt : Timestamp__179445768;
+    userId : UserId__141068970
+  };
+type ReviewStatus__64633179 = {#Approved; #Pending; #Rejected};
+type Role__300349085 = {#Admin; #Customer};
+type Role__912020621 = Role__300349085;
+type Subcategory__504597285 =
+  {id : CategoryId__924393996; name : Text; slug : Text};
+type Timestamp__102412676 = Timestamp__301639476;
+type Timestamp__136757503 = Timestamp__301639476;
+type Timestamp__179445768 = Timestamp__301639476;
+type Timestamp__281002573 = Timestamp__301639476;
+type Timestamp__301639476 = Int;
+type Timestamp__434460450 = Timestamp__301639476;
+type UserId__141068970 = UserId__158757552;
+type UserId__158757552 = Principal;
+type UserId__315772724 = UserId__158757552;
+type UserId__400494113 = UserId__158757552;
+type UserInternal__973825871 =
+  {
+    var addresses : [Address__227950649];
+    var avatarUrl : ?Text;
+    createdAt : Timestamp__136757503;
+    var defaultAddressIndex : ?Nat;
+    var displayName : Text;
+    var email : Text;
+    id : UserId__315772724;
+    var isActive : Bool;
+    var preferences : UserPreferences__2937221;
+    var role : Role__912020621;
+    var updatedAt : Timestamp__136757503
+  };
+type UserPreferences__2937221 =
+  {currency : Text; emailNotifications : Bool; language : Text};
+actor {
+  stable carts :
+    {
+      var root :
+        Node__46230540<UserId__158757552,
+                        List__415060402<CartItemInternal__855898022>>;
+      var size : Nat__490723111
+    };
+  stable categories :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Category__951250105]];
+      var elementIndex : Nat__490723111
+    };
+  stable coupons :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?CouponInternal__493289220]];
+      var elementIndex : Nat__490723111
+    };
+  stable nextCouponIdRef : {var value : Nat};
+  stable nextOrderIdRef : {var value : Nat};
+  stable nextProductIdRef : {var value : Nat};
+  stable nextReviewIdRef : {var value : Nat};
+  stable orders :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?OrderInternal__948861561]];
+      var elementIndex : Nat__490723111
+    };
+  stable products :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?ProductInternal__902793983]];
+      var elementIndex : Nat__490723111
+    };
+  stable reviews :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?ReviewInternal__542788455]];
+      var elementIndex : Nat__490723111
+    };
+  stable seededRef : {var value : Bool};
+  stable users :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?UserInternal__973825871]];
+      var elementIndex : Nat__490723111
+    };
+  stable wishlists :
+    {
+      var root :
+        Node__46230540<UserId__158757552,
+                        List__415060402<ProductId__160010635>>;
+      var size : Nat__490723111
+    }
+};

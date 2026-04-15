@@ -1,0 +1,359 @@
+type UserPreferences = 
+ record {
+   currency: text;
+   emailNotifications: bool;
+   language: text;
+ };
+type UserId = principal;
+type User = 
+ record {
+   addresses: vec Address;
+   avatarUrl: opt text;
+   createdAt: Timestamp;
+   defaultAddressIndex: opt nat;
+   displayName: text;
+   email: text;
+   id: UserId;
+   isActive: bool;
+   preferences: UserPreferences;
+   role: Role;
+   updatedAt: Timestamp;
+ };
+type UpdateProfileInput = 
+ record {
+   avatarUrl: opt text;
+   displayName: opt text;
+   email: opt text;
+   preferences: opt UserPreferences;
+ };
+type UpdateProductInput = 
+ record {
+   categoryId: opt CategoryId;
+   compareAtPrice: opt float64;
+   description: opt text;
+   images: opt vec text;
+   isActive: opt bool;
+   price: opt float64;
+   reorderPoint: opt nat;
+   sku: opt text;
+   stock: opt nat;
+   subcategoryId: opt CategoryId;
+   tags: opt vec text;
+   title: opt text;
+ };
+type TopProduct = 
+ record {
+   productId: ProductId;
+   revenue: float64;
+   soldCount: nat;
+   title: text;
+ };
+type Timestamp = int;
+type Subcategory = 
+ record {
+   id: CategoryId;
+   name: text;
+   slug: text;
+ };
+type Role = 
+ variant {
+   Admin;
+   Customer;
+ };
+type ReviewStatus = 
+ variant {
+   Approved;
+   Pending;
+   Rejected;
+ };
+type ReviewId = nat;
+type Review = 
+ record {
+   comment: text;
+   createdAt: Timestamp;
+   id: ReviewId;
+   images: vec text;
+   productId: ProductId;
+   rating: nat;
+   status: ReviewStatus;
+   title: text;
+   updatedAt: Timestamp;
+   userId: UserId;
+ };
+type RevenueByPeriod = 
+ record {
+   orderCount: nat;
+   period: text;
+   revenue: float64;
+ };
+type RegisterInput = 
+ record {
+   displayName: text;
+   email: text;
+ };
+type ProductRatingSummary = 
+ record {
+   averageRating: float64;
+   productId: ProductId;
+   ratingCounts: vec nat;
+   totalReviews: nat;
+ };
+type ProductId = nat;
+type ProductFilter = 
+ record {
+   categoryId: opt CategoryId;
+   inStockOnly: bool;
+   isActive: opt bool;
+   maxPrice: opt float64;
+   minPrice: opt float64;
+   searchTerm: opt text;
+   subcategoryId: opt CategoryId;
+   tags: vec text;
+ };
+type Product = 
+ record {
+   categoryId: CategoryId;
+   compareAtPrice: opt float64;
+   createdAt: Timestamp;
+   description: text;
+   id: ProductId;
+   images: vec text;
+   isActive: bool;
+   price: float64;
+   reorderPoint: nat;
+   sku: text;
+   soldCount: nat;
+   stock: nat;
+   subcategoryId: opt CategoryId;
+   tags: vec text;
+   title: text;
+   updatedAt: Timestamp;
+ };
+type PaymentMethod = 
+ variant {
+   MtnMomo;
+   PayPal;
+   Stripe;
+ };
+type OrderStatus = 
+ variant {
+   Cancelled;
+   Delivered;
+   Pending;
+   Processing;
+   Refunded;
+   Shipped;
+ };
+type OrderItem = 
+ record {
+   imageUrl: text;
+   price: float64;
+   productId: ProductId;
+   quantity: nat;
+   title: text;
+ };
+type OrderId = nat;
+type OrderFilter = 
+ record {
+   customerId: opt UserId;
+   fromDate: opt Timestamp;
+   paymentMethod: opt PaymentMethod;
+   status: opt OrderStatus;
+   toDate: opt Timestamp;
+ };
+type Order = 
+ record {
+   couponCode: opt text;
+   createdAt: Timestamp;
+   customerId: UserId;
+   discountAmount: float64;
+   id: OrderId;
+   items: vec OrderItem;
+   notes: opt text;
+   paymentMethod: PaymentMethod;
+   paymentReference: opt text;
+   shippingAddress: Address;
+   status: OrderStatus;
+   subtotal: float64;
+   total: float64;
+   trackingNumber: opt text;
+   updatedAt: Timestamp;
+ };
+type LowStockAlert = 
+ record {
+   productId: ProductId;
+   reorderPoint: nat;
+   stock: nat;
+   title: text;
+ };
+type DiscountType = 
+ variant {
+   Fixed;
+   Percent;
+ };
+type DashboardStats = 
+ record {
+   lowStockCount: nat;
+   ordersToday: nat;
+   pendingOrders: nat;
+   revenueToday: float64;
+   totalOrders: nat;
+   totalProducts: nat;
+   totalRevenue: float64;
+   totalUsers: nat;
+ };
+type CreateReviewInput = 
+ record {
+   comment: text;
+   images: vec text;
+   productId: ProductId;
+   rating: nat;
+   title: text;
+ };
+type CreateProductInput = 
+ record {
+   categoryId: CategoryId;
+   compareAtPrice: opt float64;
+   description: text;
+   images: vec text;
+   isActive: bool;
+   price: float64;
+   reorderPoint: nat;
+   sku: text;
+   stock: nat;
+   subcategoryId: opt CategoryId;
+   tags: vec text;
+   title: text;
+ };
+type CreateOrderInput = 
+ record {
+   couponCode: opt text;
+   items: vec record {
+                productId: ProductId;
+                quantity: nat;
+              };
+   paymentMethod: PaymentMethod;
+   shippingAddress: Address;
+ };
+type CreateCouponInput = 
+ record {
+   applicableCategories: vec CategoryId;
+   code: text;
+   discountType: DiscountType;
+   discountValue: float64;
+   minOrderAmount: opt float64;
+   usageLimit: opt nat;
+   validFrom: Timestamp;
+   validTo: Timestamp;
+ };
+type CouponValidation = 
+ record {
+   discountAmount: float64;
+   isValid: bool;
+   message: text;
+ };
+type CouponId = nat;
+type Coupon = 
+ record {
+   applicableCategories: vec CategoryId;
+   code: text;
+   createdAt: Timestamp;
+   discountType: DiscountType;
+   discountValue: float64;
+   id: CouponId;
+   isActive: bool;
+   minOrderAmount: opt float64;
+   usageCount: nat;
+   usageLimit: opt nat;
+   validFrom: Timestamp;
+   validTo: Timestamp;
+ };
+type CategoryId = nat;
+type Category = 
+ record {
+   id: CategoryId;
+   name: text;
+   slug: text;
+   subcategories: vec Subcategory;
+ };
+type CartItem = 
+ record {
+   addedAt: Timestamp;
+   productId: ProductId;
+   quantity: nat;
+ };
+type AnalyticsPeriod = 
+ variant {
+   Day;
+   Month;
+   Week;
+   Year;
+ };
+type Address = 
+ record {
+   city: text;
+   country: text;
+   fullName: text;
+   phone: text;
+   postalCode: text;
+   state: text;
+   street: text;
+ };
+service : {
+  addAddress: (address: Address) -> (bool);
+  addToCart: (productId: ProductId, quantity: nat) -> (bool);
+  addToWishlist: (productId: ProductId) -> (bool);
+  adminAdjustStock: (id: ProductId, delta: int) -> (bool);
+  adminBulkSetActive: (ids: vec ProductId, isActive: bool) -> (nat);
+  adminCreateCoupon: (input: CreateCouponInput) -> (Coupon);
+  adminCreateProduct: (input: CreateProductInput) -> (Product);
+  adminDeactivateCoupon: (id: CouponId) -> (bool);
+  adminDeactivateUser: (userId: UserId) -> (bool);
+  adminDeleteProduct: (id: ProductId) -> (bool);
+  adminGetDashboardStats: () -> (DashboardStats);
+  adminGetLowStockAlerts: () -> (vec LowStockAlert);
+  adminGetPendingReviews: () -> (vec Review);
+  adminGetRevenueByPeriod: (period: AnalyticsPeriod, count: nat) ->
+   (vec RevenueByPeriod);
+  adminGetTopProducts: (limit: nat) -> (vec TopProduct);
+  adminListCoupons: (activeOnly: bool) -> (vec Coupon);
+  adminListOrders: (filter: OrderFilter, offset: nat, limit: nat) ->
+   (vec Order);
+  adminListUsers: (offset: nat, limit: nat) -> (vec User);
+  adminModerateReview: (id: ReviewId, status: ReviewStatus) -> (bool);
+  adminSetTrackingNumber: (id: OrderId, trackingNumber: text) -> (bool);
+  adminSetUserRole: (userId: UserId, role: Role) -> (bool);
+  adminUpdateCoupon: (id: CouponId, input: CreateCouponInput) -> (opt Coupon);
+  adminUpdateOrderStatus: (id: OrderId, status: OrderStatus) -> (bool);
+  adminUpdateProduct: (id: ProductId, input: UpdateProductInput) ->
+   (opt Product);
+  cancelOrder: (id: OrderId) -> (bool);
+  clearCart: () -> (bool);
+  getCart: () -> (vec CartItem) query;
+  getMyOrders: (offset: nat, limit: nat) -> (vec Order) query;
+  getMyProfile: () -> (opt User) query;
+  getMyReviews: () -> (vec Review) query;
+  getOrderDetail: (id: OrderId) -> (opt Order) query;
+  getProduct: (id: ProductId) -> (opt Product) query;
+  getProductRating: (productId: ProductId) -> (ProductRatingSummary) query;
+  getProductRatingSummary: (id: ProductId) -> (opt ProductId) query;
+  getProductReviews: (productId: ProductId, approvedOnly: bool) ->
+   (vec Review) query;
+  getWishlist: () -> (vec ProductId) query;
+  listCategories: () -> (vec Category) query;
+  listProducts: (filter: ProductFilter, offset: nat, limit: nat) ->
+   (vec Product) query;
+  placeOrder: (input: CreateOrderInput) -> (Order);
+  registerUser: (input: RegisterInput) -> (User);
+  removeAddress: (index: nat) -> (bool);
+  removeFromCart: (productId: ProductId) -> (bool);
+  removeFromWishlist: (productId: ProductId) -> (bool);
+  searchProducts: (term: text, limit: nat) -> (vec Product) query;
+  seedData: () -> (text);
+  setDefaultAddress: (index: nat) -> (bool);
+  submitReview: (input: CreateReviewInput) -> (Review);
+  updateCartItem: (productId: ProductId, quantity: nat) -> (bool);
+  updateMyProfile: (input: UpdateProfileInput) -> (User);
+  validateCoupon: (code: text, orderTotal: float64, categoryIds:
+   vec CategoryId) -> (CouponValidation) query;
+}

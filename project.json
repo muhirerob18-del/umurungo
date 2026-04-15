@@ -1,0 +1,27 @@
+{
+  "overview": "A full-featured multi-category e-commerce marketplace inspired by Temu. Includes a user storefront with product discovery, cart, checkout, reviews, wishlists, and order history — plus a powerful admin panel with analytics, inventory management, order management, coupon/discount tools, and sales reports. Supports Stripe, PayPal, and MTN MOMO payments.",
+  "features": [
+    "Multi-category product catalog (Electronics & Gadgets, Fashion & Apparel)",
+    "User storefront with search, filters, sorting, and recommendations",
+    "Shopping cart, promo codes, and multi-payment checkout (Stripe, PayPal, MTN MOMO)",
+    "Product reviews and star ratings with moderation",
+    "Wishlists, order history, and user accounts",
+    "Admin dashboard with analytics, revenue charts, and KPI metrics",
+    "Admin product management with bulk operations and inventory tracking",
+    "Admin order management with status updates and CSV export",
+    "Discount and coupon management with flash sales support",
+    "Modern minimalist responsive design for mobile, tablet, and desktop"
+  ],
+  "category": "e-commerce",
+  "tags": [
+    "ecommerce",
+    "marketplace",
+    "admin-panel",
+    "stripe",
+    "shopping-cart",
+    "inventory",
+    "analytics",
+    "multi-category"
+  ],
+  "last_updated": "2026-04-14T23:52:23.855Z"
+}
